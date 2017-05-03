@@ -1,6 +1,6 @@
 <?php
 
-require_once '../config.php';
+require '../config.php';
 
 function connectDB() {
     $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
@@ -175,11 +175,19 @@ function searchTinTuc($title){
     return $items;
 }
 
-function changePass($passOld, $passNew, $token){
+function changePass($passOld, $passNew, $mssv){
+
+    $conn = connectDB();
+    $query = "select * from users where password = '$passOld'";
+    $exec = $conn->query($query);
+    if($exec == null){
+        return false;
+    }
+    
     $conn = connectDB();
     $sql = "UPDATE users SET "
             . "user_password  = '" . $passNew . "' "
-            . "WHERE user_password  = '$passOld' and user_token = '$token'";
+            . "WHERE user_password  = '$passOld' and user_mssv = '$mssv'";
     $result = $conn->query($sql);
     return $result;
 }
