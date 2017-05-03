@@ -7,7 +7,7 @@ if (!isset($_POST['login']) && !isset($_SESSION["name"])) {
 }
 
 //Get user password from form
-$user_name = isset($_POST['user_name']) ? $_POST['user_name'] : $_SESSION["name"];
+$user_mssv = isset($_POST['user_mssv']) ? $_POST['user_mssv'] : $_SESSION["name"];
 $user_password = isset($_POST['user_password']) ? $_POST['user_password'] : $_SESSION["pass"];
 
 //Perfrom delete user
@@ -21,11 +21,11 @@ $currentUser = null;
 
 $toEnd = count($users);
 foreach ($users as $user) {
-    if ($user['user_name'] == $user_name) {
+    if ($user['user_mssv'] == $user_mssv) {
 
         if ($user['user_password'] == sha1($user_password)) {
             $currentUser = $user['user_mssv'];
-            $_SESSION["name"] = $user_name;
+            $_SESSION["name"] = $user_mssv;
             $_SESSION["pass"] = $user_password;
             if ($user['user_status'] == 1) {
                 $wellcome = "Welcome Super Admin";
@@ -33,7 +33,7 @@ foreach ($users as $user) {
                 $admin = true;
                 break;
             } else {
-                $wellcome = "Welcome $user_name";
+                $wellcome = "Welcome {$user['user_name']}";
                 $account = getSingleUser($user['user_mssv']);
                 $admin = false;
                 break;
@@ -144,6 +144,9 @@ foreach ($users as $user) {
                     break;
                 case 'details':
                     include 'DetailNews.php';
+                    break;
+                case 'userdetails':
+                    include 'DetailUser.php';
                     break;
                 default:
                     include 'AddUser.php';

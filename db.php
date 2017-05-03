@@ -8,23 +8,6 @@ function connectDB() {
     return $conn;
 }
 
-function checkToken($username, $token){
-	$conn = connectDB();
-    $sql = "SELECT * FROM users WHERE `user_name` LIKE '$username' AND `user_token` LIKE '$token'";
-
-    $result = $conn->query($sql);
-
-    $items = array();
-    while ($row = $result->fetch_assoc()) {
-        $items[] = $row;
-    }
-
-
-    $conn->close();
-
-    return $items;
-}
-
 function getUsers() {
 
     $conn = connectDB();
@@ -47,7 +30,7 @@ function getUsers() {
 function getSingleUser($MSSV) {
     $conn = connectDB();
     //Query
-    $sql = "SELECT * FROM users WHERE user_mssv = " . $MSSV;
+    $sql = "SELECT * FROM users WHERE user_mssv =  '$MSSV'";
 
     //Excute query
     $result = $conn->query($sql);
@@ -70,26 +53,72 @@ function deleteUser($mssv) {
     return $result;
 }
 
-function addUser($user, $password, $mssv, $khoa, $lop, $status) {
+function addUser($user, $password, $mssv, $khoa, $lop, $ngaysinh, $noisinh, $gioitinh, $dantoc, $cmnd, $togiao, $ngayvaodoan, $email, $sdt,  $status) {
     $conn = connectDB();
-    $sql = "INSERT INTO users(user_name, user_password, user_mssv, user_khoa, user_lop, user_status)"
-            . " VALUES('" . $user . "','" . sha1($password) . "','$mssv', '$khoa', '$lop'," . $status . ")";
+    $sql = "INSERT INTO users(user_name, user_password, user_mssv, user_khoa, user_lop, ngaysinh, noisinh, gioitinh, dantoc, cmnd, tongiao, ngayvaodoan, email, sdt, user_status)"
+            . " VALUES('" . $user . "','" . sha1($password) . "','$mssv', '$khoa', '$lop', '$ngaysinh', '$noisinh',  '$gioitinh', '$dantoc', '$cmnd', '$togiao', '$ngayvaodoan', '$email', '$sdt', " . $status . ")";
 
     $result = $conn->query($sql);
     return $result;
 }
 
-function updateUser($mssv, $password, $khoa, $lop, $status) {
+function checUser($mssv, $token){
+	 $conn = connectDB();
+    //Query
+    $sql = "SELECT * FROM users WHERE user_mssv = '$mssv' and token = $token";
+
+    //Excute query
+    $result = $conn->query($sql);
+
+    $items = array();
+    while ($row = $result->fetch_assoc()) {
+        $items[] = $row;
+    }
+	
+	if($items == null){
+		return false;
+	}
+
+    //Close connection
+    $conn->close();
+
+    return true;
+}
+function updateUser($mssv, $ngaysinh, $noisinh, $gioitinh, $dantoc, $cmnd, $togiao, $ngayvaodoan, $email, $sdt) {
     $conn = connectDB();
     $sql = "UPDATE users SET "
-            . "user_password  = '" . sha1($password) . "', "
-            . "user_khoa  = '" . $khoa . "', "
-            . "user_lop  = '" . $lop . "', "
-            . "user_status = '" . $status . "' "
+            . "ngaysinh  = '" . $ngaysinh . "', "
+            . "noisinh  = '" . $noisinh . "', "
+            . "gioitinh  = '" . $gioitinh . "', "
+            . "dantoc  = '" . $dantoc . "', "
+            . "cmnd  = '" . $cmnd . "', "
+            . "tongiao  = '" . $togiao . "', "
+            . "ngayvaodoan  = '" . $ngayvaodoan . "', "
+            . "email  = '" . $email . "', "
+            . "sdt  = '" . $sdt . "' "
             . "WHERE user_mssv  = '" . $mssv . "'";
-
+			
     $result = $conn->query($sql);
     return $result;
+}
+
+function getUsersMB() {
+
+    $conn = connectDB();
+
+    $sql = "SELECT user_name, user_mssv, user_khoa, user_lop, ngaysinh, noisinh, gioitinh, dantoc, cmnd, tongiao, ngayvaodoan, email, sdt, user_status  FROM users";
+
+    $result = $conn->query($sql);
+
+    $items = array();
+    while ($row = $result->fetch_assoc()) {
+        $items[] = $row;
+    }
+
+
+    $conn->close();
+
+    return $items;
 }
 
 function getUserByID($mssv) {
@@ -119,11 +148,12 @@ function getNews() {
         $items[] = $row;
     }
 
-
     $conn->close();
 
     return $items;
 }
+
+
 
 function getNewsByID($id) {
     $conn = connectDB();
@@ -164,6 +194,25 @@ function updateNews($id, $tintuc_title, $tintuc_content, $tintuc_status) {
 
     $result = $conn->query($sql);
     return $result;
+}
+
+function login($user_name, $password) {
+    $conn = connectDB();
+    $password = sha1($password);
+    $sql = "select * from users where user_name = '$user_name' and user_password= '$password'";
+    $result = $conn->query($sql);
+    if ($result) {
+        $items = array();
+        while ($row = $result->fetch_assoc()) {
+            $items[] = $row;
+        }
+       $name = $items[0]['user_name'].time();
+       
+       return md5($name);
+        
+    } else {
+        return false;
+    }
 }
 
 function getKhoa() {
@@ -221,4 +270,22 @@ function getLopHP() {
     $conn->close();
 
     return $items;
+}
+
+function getCTDT($hocki){
+    $conn = connectDB();
+
+    $sql = "SELECT * FROM chuongtrinhdt WHERE hocki = '$hocki'";
+
+    $result = $conn->query($sql);
+
+    $items = array();
+    while ($row = $result->fetch_assoc()) {
+        $items[] = $row;
+    }
+
+    $conn->close();
+
+    return $items;
+    var_dump($items);die;
 }

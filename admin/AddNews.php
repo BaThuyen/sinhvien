@@ -1,10 +1,30 @@
 <?php
 if (isset($_GET['id'])) {
     $heading = "Update tintuc";
-} else {
+}else{
     $heading = "Add tintuc";
 }
 
+//
+//if (isset($_POST['submit_tintuc']) && !empty($_POST['title'])) {
+//    if (isset($_GET['id'])) {
+//        //Update tintuc
+//        $result = updateNews($_GET['id'], $_POST['title'], $_POST['content'], $_POST['status']);
+//        if ($result == true) {
+//            $heading = 'Update succesfully.';
+//        } else {
+//            $heading = 'Update failed.';
+//        }
+//    } else {
+//        //Add tintuc
+//        $result = addNews($_POST['title'], $_POST['content'], $_POST['status']);
+//        if ($result == true) {
+//            $heading = 'Added succesfully.';
+//        } else {
+//            $heading = 'Added failed.';
+//        }
+//    }
+//}
 
 if (isset($_POST['submit_tintuc']) && !empty($_POST['title'])) {
     if (isset($_GET['id'])) {
@@ -17,8 +37,8 @@ if (isset($_POST['submit_tintuc']) && !empty($_POST['title'])) {
         }
     } else {
         //Add tintuc
-        //$result = addNews($_POST['title'], $_POST['content'], $_POST['status']);
-        if (true) {
+        $result = addNews($_POST['title'], $_POST['content'], $_POST['status']);
+        if ($result == true) {
             $heading = 'Added succesfully.';
             define('API_ACCESS_KEY', 'AAAA1cBJjsQ:APA91bFIkhaSMrQ1_j75m5Wkcjmj4VbD_Hv-fEGqv16DviVf2cx_Xcuz1T2cQPGkthFhdEIB5_fP9xm6bqx52M1z1qnHH_up9UiW4E8C5DLg7RsVvcepD06oslsPfqxbckZaPm7lqwxF');
             //$registrationIDs = array("1");
@@ -55,13 +75,12 @@ if (isset($_POST['submit_tintuc']) && !empty($_POST['title'])) {
             curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
             $result = curl_exec($ch);
             curl_close($ch);
-            var_dump($result);
-            die();
         } else {
             $heading = 'Added failed.';
         }
     }
 }
+
 
 
 //get tintuc by ID
@@ -111,7 +130,7 @@ if (isset($_GET['id'])) {
                             <label class="control-label">Status :</label>
                             <div class="controls">
                                 (1: actice,   0: not actice)
-                                <input type="text" name="status"class="span11" placeholder="0 or 1" value="<?= $tintuc_status == null ? 1 : $tintuc_status ?>"/> *
+                                <input type="text" name="status"class="span11" placeholder="0 or 1" value="<?= $tintuc_status == null ?1:$tintuc_status ?>"/> *
                             </div>
                         </div>
 

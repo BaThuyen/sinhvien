@@ -22,7 +22,7 @@ if (isset($_GET['destroy'])) {
             <div class="login-box-msg">Đăng Nhập</div>
             <form method="POST" action="admin/index.php" accept-charset="UTF-8" name="loginForm" id="loginForm" role="form"><input name="_token" type="hidden" value="I01wWehVftp115ckI5yDcKUqa5iNkBT6FkrQzGu7">
                 <div class="form-group has-feedback">
-                    <input name="user_name" class="form-control input-sm" required="1" placeholder="User name">
+                    <input name="user_mssv" class="form-control input-sm" required="1" placeholder="Mã số sinh viên">
                     <i class="fa fa-envelope form-control-feedback"></i>
                 </div>
                 <div class="form-group has-feedback">

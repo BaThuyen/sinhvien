@@ -42,6 +42,8 @@
                                             <input type="hidden" name="user_mssv" value= "<?php echo $user['user_mssv'] ?>" >
                                             <input type="submit" name="delete_user" class="btn btn-danger btn-mini" value="Delete" onclick="return confirm('Bạn có chắc chắn muốn xóa đối tượng?')">
                                         </form>
+                                        
+                                        <a class="btn btn-success btn-mini" href="<?php echo BASE_URL . '/admin/index.php?page=userdetails&mssv=' . $user['user_mssv'] ?>">Detail</a>
                                     </td>
                                 </tr>
                             <?php } ?>

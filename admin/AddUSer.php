@@ -7,7 +7,7 @@ if (isset($_GET['mssv'])) {
     $heading = "Update user";
 } else {
     if ($admin == false) {
-        header("Location: ../index.php");
+        //header("Location: ../index.php");
     }
     $heading = "Add user";
 }
@@ -16,7 +16,7 @@ if (isset($_GET['mssv'])) {
 if (isset($_POST['submit_user']) && ($_POST['password'] == $_POST['config_password'])) {
     //Update user
     if (isset($_GET['mssv'])) {
-        $result = updateUser($_GET['mssv'], $_POST['password'], $_POST['khoa'], $_POST['lop'], $_POST['status']);
+        $result = updateUser($_GET['mssv'], $_POST['ngaysinh'], $_POST['noisinh'], $_POST['gioitinh'], $_POST['dantoc'], $_POST['cmnd'], $_POST['tongiao'], $_POST['ngayvaodoan'], $_POST['email'], $_POST['sdt']);
         if ($result == true) {
             $heading = 'Update succesfully.';
         } else {
@@ -24,7 +24,7 @@ if (isset($_POST['submit_user']) && ($_POST['password'] == $_POST['config_passwo
         }
     } else {
         //Add new user
-        $result = addUser($_POST['user'], $_POST['password'], $_POST['mssv'], $_POST['khoa'], $_POST['lop'], $_POST['status']);
+        $result = addUser($_POST['user'], $_POST['password'], $_POST['mssv'], $_POST['khoa'], $_POST['lop'], $_POST['ngaysinh'], $_POST['noisinh'], $_POST['gioitinh'], $_POST['dantoc'], $_POST['cmnd'], $_POST['tongiao'], $_POST['ngayvaodoan'], $_POST['email'], $_POST['sdt'], $_POST['status']);
         if ($result == true) {
             $heading = 'Added succesfully.';
         } else {
@@ -40,6 +40,15 @@ $user_name_value = isset($user_value['user_name']) ? $user_value['user_name'] : 
 $user_khoa_value = isset($user_value['user_khoa']) ? $user_value['user_khoa'] : "";
 $user_lop_value = isset($user_value['user_lop']) ? $user_value['user_lop'] : "";
 $user_mssv_value = isset($user_value['user_mssv']) ? $user_value['user_mssv'] : "";
+$user_ngaysinh_value = isset($user_value['ngaysinh']) ? $user_value['ngaysinh'] : "";
+$user_noisinh_value = isset($user_value['noisinh']) ? $user_value['noisinh'] : "";
+$user_gioitinh_value = isset($user_value['gioitinh']) ? $user_value['gioitinh'] : "";
+$user_dantoc_value = isset($user_value['dantoc']) ? $user_value['dantoc'] : "";
+$user_cmnd_value = isset($user_value['cmnd']) ? $user_value['cmnd'] : "";
+$user_tongiao_value = isset($user_value['tongiao']) ? $user_value['tongiao'] : "";
+$user_ngayvaodoan_value = isset($user_value['ngayvaodoan']) ? $user_value['ngayvaodoan'] : "";
+$user_email_value = isset($user_value['email']) ? $user_value['email'] : "";
+$user_sdt_value = isset($user_value['sdt']) ? $user_value['sdt'] : "";
 $user_status_value = isset($user_value['user_status']) ? $user_value['user_status'] : "";
 
 //
@@ -91,7 +100,7 @@ $user_status_value = isset($user_value['user_status']) ? $user_value['user_statu
                         <div class="control-group">
                             <label class="control-label" >Config Password :</label>
                             <div class="controls">
-                                <input class="span11" placeholder="Config Password" name="config_password" type="password"/> *
+                                <input class="span11"  placeholder="Config Password" name="config_password" type="password"/> *
                             </div>
                         </div>
 
@@ -99,7 +108,7 @@ $user_status_value = isset($user_value['user_status']) ? $user_value['user_statu
                             <label class="control-label">Khoa:</label>
                             <div class="controls">
                                 <?php $khoa = getKhoa() ?>
-                                <select name="khoa" class="span11">*
+                                <select name="khoa" class="span11"  id="khoaDS" >*
                                     <option><?= $user_khoa_value ?></option>
                                     <optgroup label="--------------------------------------------------------">
                                         <?php foreach ($khoa as $value) { ?>
@@ -114,7 +123,7 @@ $user_status_value = isset($user_value['user_status']) ? $user_value['user_statu
                             <label class="control-label">Lop:</label>
                             <div class="controls">
                                 <?php $lop = getLop() ?>
-                                <select name="lop" class="span11">*
+                                <select name="lop" class="span11"  id="lopDS" >*
                                     <option><?= $user_lop_value ?></option>
                                     <optgroup label="--------------------------------------------------------">
                                         <?php foreach ($lop as $value) { ?>
@@ -126,9 +135,72 @@ $user_status_value = isset($user_value['user_status']) ? $user_value['user_statu
                         </div>
 
                         <div class="control-group">
+                            <label class="control-label" >Ngày sinh :</label>
+                            <div class="controls">
+                                <input class="span11"  name="ngaysinh" type="text" value="<?= $user_ngaysinh_value ?>"/> *
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label" >Nơi sinh :</label>
+                            <div class="controls">
+                                <input class="span11"  name="noisinh" type="text" value="<?= $user_noisinh_value ?>"/> *
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label" >Giới tính :</label>
+                            <div class="controls">
+                                <input class="span11"  name="gioitinh" type="text" value="<?= $user_gioitinh_value ?>"/> *
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label" >Dân tộc :</label>
+                            <div class="controls">
+                                <input class="span11"  name="dantoc" type="text" value="<?= $user_dantoc_value ?>"/> *
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label" >số CMND :</label>
+                            <div class="controls">
+                                <input class="span11"  name="cmnd" type="text" value="<?= $user_cmnd_value ?>"/> *
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label" >tôn giáo :</label>
+                            <div class="controls">
+                                <input class="span11"  name="tongiao" type="text" value="<?= $user_tongiao_value ?>"/> *
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label" >Ngày vào đoàn :</label>
+                            <div class="controls">
+                                <input class="span11"  name="ngayvaodoan" type="text" value="<?= $user_ngayvaodoan_value ?>"/> *
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label" >Email :</label>
+                            <div class="controls">
+                                <input class="span11"  name="email" type="text" value="<?= $user_email_value ?>"/> *
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label" >Số điện thoại :</label>
+                            <div class="controls">
+                                <input class="span11"  name="sdt" type="text" value="<?= $user_sdt_value ?>"/> *
+                            </div>
+                        </div>
+
+                        <div class="control-group">
                             <label class="control-label">Status:</label>
                             <div class="controls">
-                                <select name="status" class="span11">
+                                <select name="status" class="span11" id="statusDS">
 
                                     <option><?= !empty($user_status_value) ? $user_status_value : 0 ?></option>
                                     <optgroup label="--------------------------------------------------------">
@@ -152,6 +224,9 @@ $user_status_value = isset($user_value['user_status']) ? $user_value['user_statu
                         echo "<script>
                             document.getElementById('nameDS').disabled = true;
                             document.getElementById('mssvDS').disabled = true;
+                             document.getElementById('khoaDS').disabled = true;
+                              document.getElementById('lopDS').disabled = true;
+                              document.getElementById('statusDS').disabled = true;
                         </script>";
                     }
                     ?>

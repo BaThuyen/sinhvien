@@ -157,3 +157,29 @@ function getCTDT($mssv, $hocky){
     $conn->close();
     return $items;
 }
+
+function searchTinTuc($title){
+    $conn = connectDB();
+
+    $sql = "SELECT * FROM tintuc WHERE tintuc_title LIKE '%$title%'";
+
+    $result = $conn->query($sql);
+
+    $items = array();
+    while ($row = $result->fetch_assoc()) {
+        $items[] = $row;
+    }
+
+    $conn->close();
+
+    return $items;
+}
+
+function changePass($passOld, $passNew, $token){
+    $conn = connectDB();
+    $sql = "UPDATE users SET "
+            . "user_password  = '" . $passNew . "', "
+            . "WHERE user_password  = '$passOld' and user_token = '$token'";
+    $result = $conn->query($sql);
+    return $result;
+}
