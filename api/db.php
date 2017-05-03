@@ -178,7 +178,7 @@ function searchTinTuc($title){
 function changePass($passOld, $passNew, $token){
     $conn = connectDB();
     $sql = "UPDATE users SET "
-            . "user_password  = '" . $passNew . "', "
+            . "user_password  = '" . $passNew . "' "
             . "WHERE user_password  = '$passOld' and user_token = '$token'";
     $result = $conn->query($sql);
     return $result;
