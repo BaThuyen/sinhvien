@@ -175,19 +175,28 @@ function searchTinTuc($title){
     return $items;
 }
 
-function changePass($passOld, $passNew, $mssv){
+function changePass($passOld, $passNew, $mssv, $token){
 
     $conn = connectDB();
-    $query = "select * from users where password = '$passOld'";
+    if(!checkUser($mssv, $token)){
+        return "token";
+    }
+    $passOld = sha1($passOld);
+    $passNew = sha1($passNew);
+    $query = "select * from users where user_password = '$passOld' and user_mssv = '$mssv'";
     $exec = $conn->query($query);
     if($exec == null){
-        return false;
+        return "pass";
     }
     
-    $conn = connectDB();
+    
     $sql = "UPDATE users SET "
             . "user_password  = '" . $passNew . "' "
             . "WHERE user_password  = '$passOld' and user_mssv = '$mssv'";
     $result = $conn->query($sql);
-    return $result;
+    if($result){
+        return "success";
+    } else {
+        return "fail";
+    }
 }
